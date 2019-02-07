@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ItemSaveException;
 use App\Models\Item;
+use App\Services\Contracts\ItemServiceInterface;
 use App\Services\ItemService;
 use Illuminate\Http\Request;
 
@@ -103,12 +104,13 @@ class ItemController extends Controller
 
     /**
      * @param Request $request
+     * @param ItemServiceInterface $itemService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function partNumberLookup(Request $request)
+    public function partNumberLookup(Request $request, ItemServiceInterface $itemService)
     {
         $partNumber = $request->input('part_number');
-        $results = ItemService::partNumberLookup($partNumber);
+        $results = $itemService->partNumberLookup($partNumber);
 
         return response()->json($results);
     }
